@@ -15,7 +15,7 @@ module Gmail
     end
 
     def self.boxes
-      @boxes ||= [:inbox, :sent, :trash, :important, :starred, :draft, :spam, :unread, :category_updates, :category_promotions, :category_social, :category_personal, :category_forums]
+      @boxes ||= %i[inbox sent trash important starred draft spam unread category_updates category_promotions category_social category_personal category_forums]
     end
 
     boxes.each do |method|
@@ -24,7 +24,7 @@ module Gmail
       end
     end
 
-    def messages filters={}
+    def messages(filters = {})
       filters = { labelIds: [id] }.merge(filters)
       filters[:labelIds] = filters[:labelIds] | [id]
       Message.all(filters)
@@ -34,19 +34,18 @@ module Gmail
       if messagesUnread == 0
         []
       else
-        Message.all({ labelIds: [id, "UNREAD"] })
+        Message.all(labelIds: [id, 'UNREAD'])
       end
     end
 
-    def threads filters={}
+    def threads(filters = {})
       filters = { labelIds: [id] }.merge(filters)
       filters[:labelIds] = filters[:labelIds] | [id]
       Thread.all(filters)
     end
 
     def unread_threads
-      Thread.all({ labelIds: [id, "UNREAD"] })
+      Thread.all(labelIds: [id, 'UNREAD'])
     end
-
   end
 end # Gmail

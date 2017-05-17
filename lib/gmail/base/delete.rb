@@ -1,9 +1,9 @@
 module Gmail
   module Base
     module Delete
-      def delete(opts={})
-        response = Gmail.request(self.class.base_method.send("delete"), { id: id })
-        if response == ""
+      def delete(_opts = {})
+        response = Gmail.request(self.class.base_method.send('delete'), id: id)
+        if response == ''
           true
         else
           false
@@ -11,9 +11,9 @@ module Gmail
       end
 
       module ClassMethods
-        def delete(id, opts={})
-          response = Gmail.request(base_method.send("delete"), { id: id })
-          if response == ""
+        def delete(id, _opts = {})
+          response = Gmail.request(base_method.send('delete'), id: id)
+          if response == ''
             true
           else
             false
@@ -24,8 +24,6 @@ module Gmail
       def self.included(base)
         base.extend(ClassMethods)
       end
-
-
     end
   end
 end

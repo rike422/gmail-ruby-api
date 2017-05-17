@@ -5,22 +5,19 @@ module Gmail
     define_hooks :after_initialize
 
     # The default :id method is deprecated and isn't useful to us
-    if method_defined?(:id)
-      undef :id
-    end
+    undef :id if method_defined?(:id)
 
-    def initialize(hash={})
+    def initialize(hash = {})
       @values = Hashie::Mash.new hash
       run_hook :after_initialize
     end
 
-
-    def to_s(*args)
+    def to_s(*_args)
       JSON.pretty_generate(@values.to_hash)
     end
 
     def inspect
-      "#<#{self.class}:0x#{self.object_id.to_s(16)}>  " + to_s
+      "#<#{self.class}:0x#{object_id.to_s(16)}>  " + to_s
     end
 
     def [](k)
@@ -31,7 +28,7 @@ module Gmail
       @values.send("#{k}=", v)
     end
 
-    def to_json(*a)
+    def to_json(*_a)
       JSON.generate(@values)
     end
 
@@ -55,15 +52,13 @@ module Gmail
       self
     end
 
-    alias_method :detailed!, :refresh
+    alias detailed! refresh
     #
     def to_hash
       Util.symbolize_names(@values.to_hash)
     end
 
-    def values
-      @values
-    end
+    attr_reader :values
 
     #
     # def each(&blk)
@@ -88,8 +83,8 @@ module Gmail
     protected
 
     def metaclass
-      class << self;
-        self;
+      class << self
+        self
       end
     end
 
@@ -126,8 +121,7 @@ module Gmail
     # end
     #
     def method_missing(name, *args)
-
-      if @values.send(name.to_s + "?")
+      if @values.send(name.to_s + '?')
         @values.send(name)
       else
         begin
@@ -141,7 +135,6 @@ module Gmail
         end
       end
     end
-
 
     #
     # def respond_to_missing?(symbol, include_private = false)

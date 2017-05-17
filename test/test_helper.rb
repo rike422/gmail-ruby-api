@@ -9,14 +9,11 @@ require File.expand_path('../test_data', __FILE__)
 module Gmail
   @client = nil
 
-  def self.connect
+  def self.connect; end
 
-  end
-
-  def self.client= value
+  def self.client=(value)
     @client = value
   end
-
 end
 
 class Test::Unit::TestCase
@@ -26,7 +23,7 @@ class Test::Unit::TestCase
   setup do
     @mock = mock
     Gmail.client = @mock
-    Gmail.new(client_id: "foo", client_secret: "foo", refresh_token: "foo", application_name: "test", application_version: "test")
+    Gmail.new(client_id: 'foo', client_secret: 'foo', refresh_token: 'foo', application_name: 'test', application_version: 'test')
   end
 
   teardown do

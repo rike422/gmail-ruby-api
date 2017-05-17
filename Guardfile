@@ -17,16 +17,15 @@
 
 group :red_green_refactor, halt_on_fail: false do
   guard :rubocop, all_on_start: false do
-    watch(%r{.+\.rb$})
-    watch(%r{(?:.+/)?\.rubocop\.yml$}) {|m| File.dirname(m[0])}
+    watch(/.+\.rb$/)
+    watch(%r{(?:.+/)?\.rubocop\.yml$}) { |m| File.dirname(m[0]) }
   end
 
   guard :test do
     watch(%r{^test/.+_test\.rb$})
-    watch('test/test_helper.rb') {'test'}
+    watch('test/test_helper.rb') { 'test' }
 
     # Non-rails
-    watch(%r{^lib/(.+)\.rb$}) {|m| "test/#{m[1]}_test.rb"}
+    watch(%r{^lib/(.+)\.rb$}) { |m| "test/#{m[1]}_test.rb" }
   end
 end
-

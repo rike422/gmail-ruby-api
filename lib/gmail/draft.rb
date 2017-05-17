@@ -10,44 +10,34 @@ module Gmail
       if @values.message.is_a?(Message)
         @values.message
       else
-        @values.message = Util.convert_to_gmail_object(to_hash[:message], key="message")
+        @values.message = Util.convert_to_gmail_object(to_hash[:message], key = 'message')
         if @values.message.payload.nil?
-          self.detailed!
+          detailed!
           message
         end
         @values.message
       end
     end
 
-    def save(opts={})
+    def save(_opts = {})
       msg = { raw: message.raw }
-      if message.threadId
-        msg[:threadId] = message.threadId
-      end
-      if message.labelIds
-        msg[:labelIds] = message.labelIds
-      end
+      msg[:threadId] = message.threadId if message.threadId
+      msg[:labelIds] = message.labelIds if message.labelIds
       body = { message: msg }
       update(body)
     end
 
-    def save!(opts={})
+    def save!(_opts = {})
       msg = { raw: message.raw }
-      if message.threadId
-        msg[:threadId] = message.threadId
-      end
-      if message.labelIds
-        msg[:labelIds] = message.labelIds
-      end
+      msg[:threadId] = message.threadId if message.threadId
+      msg[:labelIds] = message.labelIds if message.labelIds
       body = { message: msg }
       update!(body)
     end
 
     def deliver
-      response = Gmail.request(self.class.base_method.to_h['gmail.users.drafts.send'], {}, { id: id })
+      response = Gmail.request(self.class.base_method.to_h['gmail.users.drafts.send'], {}, id: id)
       Message.get(response[:id])
     end
-
-
   end
 end

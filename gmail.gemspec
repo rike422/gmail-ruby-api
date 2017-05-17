@@ -25,13 +25,18 @@ Gem::Specification.new do |s|
   s.add_dependency "hooks", ">=0.4.0"
   s.add_dependency "hashie", ">=3.3.2"
   s.add_dependency "stringex"
-  
+
   # development dependencies
   s.add_development_dependency "rake"
   s.add_development_dependency "test-unit"
-  s.add_development_dependency('mocha', '~> 1.0.0')
+  s.add_development_dependency('mocha', '~> 1.2.0')
   s.add_development_dependency('shoulda', '~> 3.5.0')
 
+  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'coveralls'
+  s.add_development_dependency 'guard'
+  s.add_development_dependency 'guard-rubocop'
+  s.add_development_dependency 'guard-test'
 
   s.add_development_dependency "gem-release"
   

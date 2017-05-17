@@ -23,14 +23,14 @@ module Gmail
 
     def unread_messages
 
-      messages.select{|m| m.unread?}
+      messages.select {|m| m.unread?}
 
     end
 
 
     def sent_messages
 
-      messages.select{|m| m.sent?}
+      messages.select {|m| m.sent?}
 
     end
 

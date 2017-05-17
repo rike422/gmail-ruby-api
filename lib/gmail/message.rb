@@ -20,23 +20,23 @@ module Gmail
     end
 
     def deliver!
-      response = Gmail.request(self.class.base_method.to_h['gmail.users.messages.send'],{}, msg_parameters)
+      response = Gmail.request(self.class.base_method.to_h['gmail.users.messages.send'], {}, msg_parameters)
       @values = Message.get(response[:id]).values
       self
     end
 
     def deliver
-      response = Gmail.request(self.class.base_method.to_h['gmail.users.messages.send'],{}, msg_parameters)
+      response = Gmail.request(self.class.base_method.to_h['gmail.users.messages.send'], {}, msg_parameters)
       Message.get(response[:id])
     end
 
     def insert
-      response = Gmail.request(self.class.base_method.insert,{}, msg_parameters)
+      response = Gmail.request(self.class.base_method.insert, {}, msg_parameters)
       Message.get(response[:id])
     end
 
     def insert!
-      response = Gmail.request(self.class.base_method.insert,{}, msg_parameters)
+      response = Gmail.request(self.class.base_method.insert, {}, msg_parameters)
       @values = Message.get(response[:id]).values
       self
     end
@@ -91,7 +91,6 @@ module Gmail
     end
 
 
-
     def raw # is not in private because the method is used in Draft
       if super #check if raw is set to allow fully custom message to be sent
         super
@@ -103,10 +102,10 @@ module Gmail
           msg.body = body
         end
         msg.from = from
-        msg.to   = to
+        msg.to = to
         msg.cc = cc
-        msg.header['X-Bcc'] = bcc unless bcc.nil?#because Mail gem doesn't allow bcc headers...
-        msg.in_reply_to = in_reply_to  unless in_reply_to.nil?
+        msg.header['X-Bcc'] = bcc unless bcc.nil? #because Mail gem doesn't allow bcc headers...
+        msg.in_reply_to = in_reply_to unless in_reply_to.nil?
         msg.references = references unless references.nil?
         if text || html
           bodypart = Mail::Part.new
@@ -142,7 +141,7 @@ module Gmail
     private
 
     def msg_parameters
-      msg = {raw: raw}
+      msg = { raw: raw }
       if threadId
         msg[:threadId] = threadId
       end
@@ -177,13 +176,13 @@ module Gmail
       msg.cc = to_ar.join(", ")
       msg.bcc = nil
       msg.threadId = thread_id
-      msg.references = ((references || "").split(Regexp.new "\s+") <<  message_id).join(" ")
+      msg.references = ((references || "").split(Regexp.new "\s+") << message_id).join(" ")
       msg.in_reply_to = ((in_reply_to || "").split(Regexp.new "\s+") << message_id).join(" ")
       msg
     end
 
     def quote_in reply_msg
-      text_to_append = "\r\n\r\n#{date} #{from}:\r\n\r\n>" + (body || text).gsub("\n", "\n>")  unless body.nil? && text.nil?
+      text_to_append = "\r\n\r\n#{date} #{from}:\r\n\r\n>" + (body || text).gsub("\n", "\n>") unless body.nil? && text.nil?
       html_to_append = "\r\n<br><br><div class=\"gmail_quote\"> #{date} #{CGI.escapeHTML(from)}:<br><blockquote class=\"gmail_quote\" style=\"margin:0 0 0 .8ex;border-left:1px #ccc solid;padding-left:1ex\">" + html + "</blockquote></div><br>" unless html.nil?
       reply_msg.html = "<div>" + reply_msg.html + "</div>" + html_to_append unless reply_msg.html.nil?
       reply_msg.text = reply_msg.text + text_to_append unless reply_msg.text.nil?
@@ -199,7 +198,7 @@ module Gmail
     def set_basics
       if @values.payload
         ["From", "To", "Cc", "Subject", "Bcc", "Date", "Message-ID", "References", "In-Reply-To", "Delivered-To"].each do |n|
-          if payload_n = @values.payload.headers.select{|h| h.name.downcase == n.downcase}.first
+          if payload_n = @values.payload.headers.select {|h| h.name.downcase == n.downcase}.first
             @values.send(n.downcase.tr("-", "_") + "=", payload_n.value)
           end
         end
@@ -223,7 +222,7 @@ module Gmail
     end
 
     class Hashie::Mash
-      def find_all_object_containing(key, value )
+      def find_all_object_containing(key, value)
         result=[]
         if self.send(key) == value
           result << self
@@ -231,7 +230,7 @@ module Gmail
         self.values.each do |vs|
           vs = [vs] unless vs.is_a? Array
           vs.each do |v|
-            result += v.find_all_object_containing(key,value) if v.is_a? Hashie::Mash
+            result += v.find_all_object_containing(key, value) if v.is_a? Hashie::Mash
           end
         end
         result

@@ -20,7 +20,7 @@ module Gmail
     end
 
     def inspect
-     "#<#{self.class}:0x#{self.object_id.to_s(16)}>  " + to_s
+      "#<#{self.class}:0x#{self.object_id.to_s(16)}>  " + to_s
     end
 
     def [](k)
@@ -64,6 +64,7 @@ module Gmail
     def values
       @values
     end
+
     #
     # def each(&blk)
     #   @values.each(&blk)
@@ -87,8 +88,11 @@ module Gmail
     protected
 
     def metaclass
-      class << self; self; end
+      class << self;
+        self;
+      end
     end
+
     #
     # def remove_accessors(keys)
     #   metaclass.instance_eval do
@@ -132,7 +136,7 @@ module Gmail
           begin
             super.send(name)
           rescue
-           nil
+            nil
           end
         end
       end

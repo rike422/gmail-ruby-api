@@ -20,34 +20,33 @@ module Gmail
     end
 
     def save(opts={})
-      msg = {raw: message.raw}
+      msg = { raw: message.raw }
       if message.threadId
         msg[:threadId] = message.threadId
       end
       if message.labelIds
         msg[:labelIds] = message.labelIds
       end
-      body = {message: msg}
+      body = { message: msg }
       update(body)
     end
 
     def save!(opts={})
-      msg = {raw: message.raw}
+      msg = { raw: message.raw }
       if message.threadId
         msg[:threadId] = message.threadId
       end
       if message.labelIds
         msg[:labelIds] = message.labelIds
       end
-      body = {message: msg}
+      body = { message: msg }
       update!(body)
     end
 
     def deliver
-      response = Gmail.request(self.class.base_method.to_h['gmail.users.drafts.send'],{},{id: id})
+      response = Gmail.request(self.class.base_method.to_h['gmail.users.drafts.send'], {}, { id: id })
       Message.get(response[:id])
     end
-
 
 
   end

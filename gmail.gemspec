@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.licenses = ['MIT']
 
   # runtime dependencies
-  s.required_ruby_version = '>= 1.9.3'
+  s.required_ruby_version = '>= 2.3.4'
   s.add_dependency "mime", ">= 0.1"
   s.add_dependency "mail", ">= 2.2.1"
   s.add_dependency "activesupport"
